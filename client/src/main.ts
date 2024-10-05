@@ -38,8 +38,8 @@ socket.on("connect", () => {
   playerId = socket.id;
   console.log(`Player ID: ${playerId}`);
 
-  socket.on("server:game:update", (gameState: GameState) => {
-    gameState = gameState;
+  socket.on("server:game:update", (newGameState: GameState) => {
+    gameState = newGameState;
     const potentialCurrentPlayer = gameState.players[playerId];
     if (!potentialCurrentPlayer) {
       throw new Error("Player not found in game state");
@@ -75,13 +75,42 @@ const UILoop = () => {
   ctx.fillStyle = "white";
   ctx.fillRect(centerX, centerY, 25, 25);
   //draw position at the top of the player
-  ctx.font = "30px Arial";
+  ctx.font = "15px Arial";
   ctx.fillStyle = "white";
   ctx.fillText(
     `x: ${currentPlayerState.position.x} y: ${currentPlayerState.position.y}`,
     centerX,
-    centerY / 2 - 30
+    centerY - 30
   );
+
+  //draw other players if fit screen
+  const midWidth = canvas.width / 2;
+  const midHeight = canvas.height / 2;
+  const playersToDraw = Object.values(gameState.players)
+    .filter((player) => player.id !== playerId)
+    .filter(
+      (player) =>
+        Math.abs(currentPlayerState.position.x - player.position.x) <
+          midWidth &&
+        Math.abs(currentPlayerState.position.y - player.position.y) < midHeight
+    );
+
+  for (const player of playersToDraw) {
+    const playerX =
+      centerX + (player.position.x - currentPlayerState.position.x);
+    const playerY =
+      centerY + (player.position.y - currentPlayerState.position.y);
+    ctx.fillStyle = "red";
+    ctx.fillRect(playerX, playerY, 25, 25);
+
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(
+      `x: ${player.position.x} y: ${player.position.y}`,
+      playerX,
+      playerY - 30
+    );
+  }
 
   requestAnimationFrame(UILoop);
 };

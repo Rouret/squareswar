@@ -18,6 +18,7 @@ const io = new Server(server, {
 const TICKS = 30;
 const MAX_TIME_TO_COMPUTE = 1000 / TICKS;
 const NB_IA = 2;
+const SPEED = 2;
 
 // Game state
 let gameState: GameState = {
@@ -83,18 +84,27 @@ const gameLoop = () => {
       // Update player position based on move event
       switch ((event as MoveEvent).name) {
         case "up":
-          player.position.y -= 1;
+          player.position.y -= 1 * SPEED;
           break;
         case "down":
-          player.position.y += 1;
+          player.position.y += 1 * SPEED;
           break;
         case "left":
-          player.position.x -= 1;
+          player.position.x -= 1 * SPEED;
           break;
         case "right":
-          player.position.x += 1;
+          player.position.x += 1 * SPEED;
           break;
       }
+    }
+  }
+
+  // Update IA positions
+  for (const playerId in gameState.players) {
+    if (playerId.startsWith("IA")) {
+      const player = gameState.players[playerId];
+      player.position.x += (Math.floor(Math.random() * 3) - 1) * SPEED;
+      player.position.y += (Math.floor(Math.random() * 3) - 1) * SPEED;
     }
   }
 
