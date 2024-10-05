@@ -1,6 +1,5 @@
 {
-  "name": "mmo",
-  "module": "index.ts",
+  "name": "squareswar-server",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
