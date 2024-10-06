@@ -1,29 +1,45 @@
-import { SocketService } from "./SocketService";
-type BindStatus = {
+import { PlayerEvents } from "../application/PlayerEvents";
+export type BindStatus = {
   name: string;
-  isPressed: boolean;
+  value: boolean;
+  type: "switch" | "hold";
+  callback: (self: BindStatus) => void;
 };
 export class InputHandler {
   private keys: Record<string, BindStatus> = {
     z: {
       name: "up",
-      isPressed: false,
+      value: false,
+      type: "hold",
+      callback: PlayerEvents.move,
     },
     s: {
       name: "down",
-      isPressed: false,
+      value: false,
+      type: "hold",
+      callback: PlayerEvents.move,
     },
     q: {
       name: "left",
-      isPressed: false,
+      value: false,
+      type: "hold",
+      callback: PlayerEvents.move,
     },
     d: {
       name: "right",
-      isPressed: false,
+      value: false,
+      type: "hold",
+      callback: PlayerEvents.move,
+    },
+    e: {
+      name: "toggleEditMode",
+      value: false,
+      type: "switch",
+      callback: PlayerEvents.toggleEditMode,
     },
   };
 
-  constructor(private socketService: SocketService) {
+  constructor() {
     this.bindInput();
   }
 
@@ -32,17 +48,23 @@ export class InputHandler {
       if (event.key in this.keys) {
         const bindStatus = this.keys[event.key];
 
-        if (bindStatus.isPressed) return;
-        bindStatus.isPressed = true;
-        this.socketService.sendMoveEvent(bindStatus.name);
+        if (bindStatus.type === "switch") {
+          bindStatus.value = !bindStatus.value;
+        } else {
+          bindStatus.value = true;
+        }
+
+        bindStatus.callback(bindStatus);
       }
     });
 
     document.addEventListener("keyup", (event) => {
       if (event.key in this.keys) {
         const bindStatus = this.keys[event.key];
-        bindStatus.isPressed = false;
-        this.socketService.sendMoveEvent("stop_" + bindStatus.name);
+        if (bindStatus.type === "hold") {
+          bindStatus.value = false;
+          bindStatus.callback(bindStatus);
+        }
       }
     });
   }

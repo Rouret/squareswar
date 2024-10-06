@@ -6,7 +6,7 @@ import { Renderer } from "./presentation/Renderer";
 
 const gameState = new GameState();
 const gameController = new GameController(gameState);
-const socketService = new SocketService(gameController);
-new InputHandler(socketService);
+new SocketService(gameController); // Singleton SocketService._
+new InputHandler();
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 new Renderer(gameController, canvas);

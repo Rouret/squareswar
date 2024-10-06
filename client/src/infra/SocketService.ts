@@ -3,6 +3,7 @@ import { GameController } from "../application/GameController";
 import { GameState } from "../domain/GameState";
 
 export class SocketService {
+  static i: SocketService;
   private socket: Socket;
 
   constructor(gameController: GameController) {
@@ -16,6 +17,8 @@ export class SocketService {
     this.socket.on("server:game:update", (newGameState: GameState) => {
       gameController.updateGameState(newGameState);
     });
+
+    SocketService.i = this;
   }
 
   sendMoveEvent(direction: string) {
@@ -24,5 +27,13 @@ export class SocketService {
       type: "move",
       name: direction,
     });
+  }
+
+  static get _() {
+    if (!this.i) {
+      throw new Error("SocketService is not initialized");
+    }
+
+    return this.i;
   }
 }

@@ -1,4 +1,5 @@
 import { GameController } from "../application/GameController";
+import { MapCell } from "../domain/GameState";
 import { Player } from "../domain/Player";
 
 export class Renderer {
@@ -35,6 +36,13 @@ export class Renderer {
     const currentPlayer =
       this.gameController.gameState.players[this.gameController.playerId];
 
+    this.drawMap(
+      centerX,
+      centerY,
+      currentPlayer,
+      this.gameController.gameState.map
+    );
+
     const visiblePlayers = this.gameController.getVisiblePlayers(
       this.canvas.width,
       this.canvas.height
@@ -62,5 +70,19 @@ export class Renderer {
       x,
       y - 30
     );
+  }
+
+  private drawMap(
+    centerX: number,
+    centerY: number,
+    currentPlayer: Player,
+    map: Array<MapCell>
+  ) {
+    map.forEach((cell) => {
+      const cellX = centerX + (cell.coordinates.x - currentPlayer.position.x);
+      const cellY = centerY + (cell.coordinates.y - currentPlayer.position.y);
+      this.ctx.fillStyle = "gray";
+      this.ctx.fillRect(cellX, cellY, 25, 25);
+    });
   }
 }

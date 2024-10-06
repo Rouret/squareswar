@@ -1,8 +1,12 @@
 import { Player } from "./Player";
 import { Position } from "./Position";
-
+export type MapCell = {
+  state: "wall";
+  coordinates: Position;
+};
 export class GameState {
   players: Record<string, Player> = {};
+  public map: Array<MapCell> = [];
 
   addPlayer(player: Player) {
     this.players[player.id] = player;
@@ -30,5 +34,6 @@ export class GameState {
 
   updateGameState(newGameState: GameState) {
     this.players = newGameState.players;
+    this.map = newGameState.map;
   }
 }
