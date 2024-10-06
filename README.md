@@ -1,9 +1,8 @@
-# Square War
+# Squares War
 
 ![v000](000.png "V0")
 
 ## Docs
-
 
 ![v000](docs/images/archi.png "Archi")
 
