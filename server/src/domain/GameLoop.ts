@@ -39,16 +39,12 @@ export class GameLoop {
     if (!this.running) return;
 
     const startTime = Date.now();
-
-    // Block the queue for event processing
     this.queue.block();
 
-    // Execute all callbacks for this tick, passing delta and tick number
     for (const callback of this.callbacks) {
       callback(this.socketService.gameState);
     }
 
-    // Reset and unblock the queue after processing
     this.queue.reset();
     this.queue.unblock();
 
@@ -58,7 +54,6 @@ export class GameLoop {
       console.log("Loop iteration took too long to compute");
     }
 
-    // Schedule the next loop iteration
     const nextLoopDelay = Math.max(
       0,
       this.maxTimeToCompute - (endTime - startTime)

@@ -23,7 +23,6 @@ const io = new Server(server, {
   },
 });
 
-// Game state
 const gameState = new GameState();
 const queue = new Queue();
 const socketService = new SocketService(io, gameState, queue);

@@ -20,7 +20,6 @@ export const handlePlayersMove = (moveEvent: MoveEvent, player: Player) => {
 
 export const moveAIs = (AIs: Array<Player>) => {
   for (const ia of AIs) {
-    //random 1 to 3
     const random = Math.floor(Math.random() * 3) + 1;
     if (ia.id.startsWith("IA") && random === 3) {
       ia.position.x +=
@@ -35,7 +34,6 @@ export const movePlayers = (players: Array<Player>) => {
   for (const player of players) {
     const { velocity, position } = player;
 
-    // Apply velocity to position
     position.x += velocity.x;
     position.y += velocity.y;
 
