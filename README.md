@@ -5,3 +5,4 @@
 ## Docs
 
 - [Client Architecture](./docs/client/Architecture.md)
+- [Server Architecture](./docs/server/Architecture.md)

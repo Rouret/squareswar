@@ -19,12 +19,12 @@ export type Vector = {
   y: number;
 };
 
-export type Event = {
+export interface Event {
   playerId: string;
   type: string;
-};
+}
 
-export type MoveEvent = Event & {
+export interface MoveEvent extends Event {
   name: "up" | "down" | "left" | "right";
   type: "move";
-};
+}
