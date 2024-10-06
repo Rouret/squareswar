@@ -25,6 +25,14 @@ export interface Event {
 }
 
 export interface MoveEvent extends Event {
-  name: "up" | "down" | "left" | "right";
+  name:
+    | "up"
+    | "down"
+    | "left"
+    | "right"
+    | "stop_up"
+    | "stop_down"
+    | "stop_left"
+    | "stop_right";
   type: "move";
 }

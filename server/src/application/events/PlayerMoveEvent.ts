@@ -15,11 +15,23 @@ export const handlePlayersMove = (moveEvent: MoveEvent, player: Player) => {
     case "right":
       player.velocity.x = GameServerConfig.game.playerSpeed;
       break;
+    case "stop_up":
+      if (player.velocity.y < 0) player.velocity.y = 0; // Arrête si le joueur montait
+      break;
+    case "stop_down":
+      if (player.velocity.y > 0) player.velocity.y = 0; // Arrête si le joueur descendait
+      break;
+    case "stop_left":
+      if (player.velocity.x < 0) player.velocity.x = 0; // Arrête si le joueur allait à gauche
+      break;
+    case "stop_right":
+      if (player.velocity.x > 0) player.velocity.x = 0; // Arrête si le joueur allait à droite
+      break;
   }
 };
 
 export const moveAIs = (AIs: Array<Player>) => {
-  for (const ia of AIs) {
+  /*  for (const ia of AIs) {
     const random = Math.floor(Math.random() * 3) + 1;
     if (ia.id.startsWith("IA") && random === 3) {
       ia.position.x +=
@@ -27,7 +39,7 @@ export const moveAIs = (AIs: Array<Player>) => {
       ia.position.y +=
         (Math.floor(Math.random() * 3) - 1) * GameServerConfig.game.playerSpeed;
     }
-  }
+  } */
 };
 
 export const movePlayers = (players: Array<Player>) => {
@@ -36,10 +48,6 @@ export const movePlayers = (players: Array<Player>) => {
 
     position.x += velocity.x;
     position.y += velocity.y;
-
-    // Apply friction to gradually stop the player if no input is given
-    velocity.x *= GameServerConfig.game.velocityFriction;
-    velocity.y *= GameServerConfig.game.velocityFriction;
 
     // Check if velocity is sufficiently small to be set to zero
     if (Math.abs(velocity.x) < 0.01) velocity.x = 0;
