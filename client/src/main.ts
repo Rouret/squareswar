@@ -51,13 +51,13 @@ socket.on("connect", () => {
 
 //keyboard input
 const keys: Record<string, string> = {
-  ArrowUp: "up",
-  ArrowDown: "down",
-  ArrowLeft: "left",
-  ArrowRight: "right",
+  z: "up",
+  s: "down",
+  q: "left",
+  d: "right",
 };
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keypress", (event) => {
   if (event.key in keys) {
     sendEvent("event:move", { name: keys[event.key] });
   }
@@ -65,9 +65,22 @@ document.addEventListener("keydown", (event) => {
 
 const UILoop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  /* // draw a grid 50x50 de pending on the player position
+
+  const playerX = currentPlayerState.position.x;
+  const playerY = currentPlayerState.position.y;
+  const gridX = playerX % gridWidth;
+  const gridY = playerY % gridHeight;
+  ctx.fillStyle = "gray";
+  for (let x = gridX; x < canvas.width; x += gridWidth) {
+    ctx.fillRect(x, 0, 1, canvas.height);
+  }
+  for (let y = gridY; y < canvas.height; y += gridHeight) {
+    ctx.fillRect(0, y, canvas.width, 1);
+  } */
 
   //draw player at the center of the screen
   const centerX = canvas.width / 2 - 25;

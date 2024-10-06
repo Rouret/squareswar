@@ -1,6 +1,7 @@
 export type Player = {
   id: string;
   position: Position;
+  velocity: Vector;
   health: number;
 };
 
@@ -11,6 +12,11 @@ export type Position = {
 
 export type GameState = {
   players: Record<string, Player>;
+};
+
+export type Vector = {
+  x: number;
+  y: number;
 };
 
 export type Event = {
